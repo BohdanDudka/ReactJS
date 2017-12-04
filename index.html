@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <title>React Tutorial</title>
+  </head>
+  <body>
+      <div id="content"></div>
+      <script type="text/babel">
+        var contacts = [
+          {
+            id : 1,
+            name :'Malder',
+            phoneNumber : '+2402525971',
+            image : 'http://junkee.com/wp-content/uploads/2017/05/CtI1Zu8UsAARI61.jpg'
+          }, {
+            id : 2,
+            name :'Scully',
+            phoneNumber : '+2406789074',
+            image : 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/article_width/public/2016/08/dana-scully.jpg?itok=Se0RQYLE'
+          }, {
+            id : 3,
+            name :'Skinner',
+            phoneNumber : '+2403449885',
+            image : 'https://pmctvline2.files.wordpress.com/2017/07/the-x-files-season-11-walter-skinner-mitch-pileggi.jpg?w=620'
+          }, {
+            id : 4,
+            name :'Smoking Man',
+            phoneNumber : '+2406774422',
+            image : 'http://www.postcity.com/Eat-Shop-Do/Do/August-2012/Cigarettes-aliens-and-Mulder-Q-A-with-William-B-Davis-coming-to-Fan-Expo-this-weekend/williambdavis-fan-expo.jpg'
+          }
+        ];
+
+        var Contact = React.createClass({
+          render: function() {
+            return (
+              <li className="contact">
+                <img className="contact-image" src={this.props.image} width="60px" height="60px" />
+                <div className="contact-info">
+                  <div className="contact-name">{this.props.name}</div>
+                  <div className="contact-number">{this.props.phoneNumber}</div>
+                </div>
+              </li>
+            );
+          }
+        });
+
+        var ContactList = React.createClass({
+          getInitialState: function() {
+            return {
+              displayedContacts: contacts
+            };
+          },
+
+          handleSearch: function(event) {
+            var searchQuery = event.target.value.toLowerCase();
+            var displayedContacts = contacts.filter(function(el) {
+              var searchValue = el.name.toLowerCase();
+              return searchValue.indexOf(searchQuery) !==-1;
+            });
+            this.setState({
+              displayedContacts: displayedContacts
+            });
+          },
+
+          render: function() {
+            return (
+              <div className="contacts">
+                <input type="text" className="search-field" onChange={this.handleSearch}/>
+                <ul className="contacts-list">
+                  {
+                    this.state.displayedContacts.map(function(el) {
+                      return <Contact
+                          key={el.id}
+                          name={el.name}
+                          phoneNumber={el.phoneNumber}
+                          image={el.image}
+                        />;
+                      })
+                    }
+                </ul>
+              </div>
+            );
+          }
+        });
+        ReactDOM.render(
+          <ContactList/>,
+          document.getElementById('content')
+        );
+      </script>
+  </body>
+</html>
